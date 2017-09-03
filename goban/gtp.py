@@ -95,3 +95,16 @@ class GtpEngine(object):
         lines = self.command('version')
         assert len(lines) == 1
         return lines[0]
+
+    def boardsize(self, size: int):
+        assert 5 <= size <= 25
+        self.command('boardsize', str(size))
+
+    def clear_board(self):
+        self.command('clear_board')
+
+    def komi(self, value: float):
+        self.command('komi', str(value))
+
+    def fixed_handicap(self, handicap: int):
+        self.command('fixed_handicap', str(handicap))
