@@ -123,7 +123,7 @@ class GtpEngine(object):
     def fixed_handicap(self, handicap: int):
         self.command('fixed_handicap', str(handicap))
 
-    def play(self, color:str, move: str):
+    def play(self, color: str, move: str):
         self.command('play', color, move)
 
     def undo(self):
