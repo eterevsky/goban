@@ -146,10 +146,11 @@ class Board(object):
         return self._resign != 0 or self._passes >= 2
 
     def color_to_move(self) -> int:
-        if self.finished():
-            return 0
-        else:
-            return self._next_to_move
+        """Returns 'b' for black, 'w' for white."""
+        return 'b' if self._next_to_move == 1 else 'w'
+    
+    def time_settings(self, *args):
+        pass
 
     def final_score(self):
         """Black score - white score. +1/-1 if one of the sides has resigned."""

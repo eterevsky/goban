@@ -1,3 +1,9 @@
+"""Implentation of GTP protocol client.
+
+The class GtpEngine is used to run a Go-playing program that supports GTP protocol and communicate
+with it.
+"""
+
 import re
 import subprocess
 from typing import List
@@ -36,11 +42,11 @@ class GtpEngine(object):
 
     def run(self):
         assert self._process is None
+        print('Starting', self._args)
         self._process = subprocess.Popen(
             self._args,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
             bufsize=0)
         self.check_protocol_version()
 
@@ -51,12 +57,14 @@ class GtpEngine(object):
         command_parts.extend(args)
 
         command_str = ' '.join(command_parts)
+        print(command_str)
         command_bytes = bytes(command_str + '\n', 'utf-8')
 
         self._process.stdin.write(command_bytes)
         lines = []
         while True:
             line = strip_gtp_line(self._process.stdout.readline())
+            print(line)
             if not line:
                 break
             lines.append(line)
@@ -87,6 +95,7 @@ class GtpEngine(object):
         response = self.command('protocol_version')
         assert len(response) == 1
         assert int(response[0]) == 2
+        print(self.full_name(), 'check ok')
 
     def quit(self):
         self.command('quit')
@@ -142,7 +151,7 @@ class GtpEngine(object):
         assert len(lines) == 1
         return lines[0]
 
-    def genmove(self, player) -> str:
+    def genmove(self, player: str) -> str:
         lines = self.command('genmove', player)
         assert len(lines) == 1
         return lines[0]
